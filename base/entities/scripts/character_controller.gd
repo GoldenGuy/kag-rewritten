@@ -67,7 +67,7 @@ func _sync(delta):
 	else:
 		return
 	
-	if is_network_master():
+	if is_network_master() && get_tree().get_network_unique_id() != 1:
 		rset_id(1, "moveLeft", moveLeft)
 		rset_id(1, "moveRight", moveRight)
 		rset_id(1, "jumping", jumping)
