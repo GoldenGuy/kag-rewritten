@@ -30,7 +30,7 @@ func _input(event):
 				emit_signal("chat_closed")
 				chat_input.release_focus()
 				get_tree().set_input_as_handled()
-		
+
 		if event is InputEventMouseButton:
 			if event.button_index == BUTTON_LEFT || event.button_index == BUTTON_RIGHT:
 				if !chat_input.get_global_rect().has_point(event.global_position):
@@ -47,17 +47,17 @@ func _send_message(message):
 	emit_signal("chat_closed")
 	chat_input.clear()
 	chat_input.release_focus()
-	
+
 	rpc("_forward_message", message)
 
 remotesync func _forward_message(message: String):
 	if !(message is String) or message.replace(" ", "").empty():
 		return
-	
+
 	var pinfo = network.players[get_tree().get_rpc_sender_id()]
-	
+
 	var filtered = message.dedent()
 	if max_characters > 0 and message.length() > max_characters:
 		filtered = filtered.substr(0, max_characters) + " [...]"
-	
+
 	chat_display.append_bbcode(str("\n", "[color=yellow]<", pinfo.name, ">[/color] ", filtered))

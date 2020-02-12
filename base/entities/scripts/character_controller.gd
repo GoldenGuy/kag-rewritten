@@ -21,7 +21,7 @@ var emote_array = {}
 
 func _ready():
 	_load_emotes()
-	
+
 	if is_network_master():
 		game_chat.connect("chat_opened", self, "_on_chat_opened")
 		game_chat.connect("chat_closed", self, "_on_chat_closed")
@@ -32,27 +32,27 @@ func _process(delta):
 func _unhandled_input(event):
 	if not is_network_master():
 		return
-	
+
 	for key in emote_array.keys():
 		if Input.is_action_just_pressed(emote_array[key].action):
 			rpc("_play_emote", key)
-	
+
 	if Input.is_action_just_pressed("move_left"):
 		moveLeft = true
 	if Input.is_action_just_released("move_left"):
 		moveLeft = false
-	
+
 	if Input.is_action_just_pressed("move_right"):
 		moveRight = true
 	if Input.is_action_just_released("move_right"):
 		moveRight = false
-	
+
 	# Crouch
 	if Input.is_action_just_pressed("crouch"):
 		crouching = true
 	if Input.is_action_just_released("crouch"):
 		crouching = false
-		
+
 	# Jump
 	if Input.is_action_just_pressed("jump"):
 		jumping = true
@@ -66,7 +66,7 @@ func _sync(delta):
 		timer -= 1.0 / fps
 	else:
 		return
-	
+
 	if is_network_master() && get_tree().get_network_unique_id() != 1:
 		rset_id(1, "moveLeft", moveLeft)
 		rset_id(1, "moveRight", moveRight)
@@ -84,20 +84,20 @@ func _load_emotes():
 		while file != "":
 			if file.ends_with(".tres"):
 				var emote = load(path + file)
-				
+
 				if emote is Emote:
 					emote_array[path + file] = emote
-			
+
 			file = dir.get_next()
 
 puppetsync func _play_emote(key):
 	if !emote_array.has(key):
 		return
-	
+
 	character_timer.stop()
 	character_emote.set_texture(emote_array[key].image)
 	character_timer.start(emote_time)
-	
+
 	yield (character_timer, "timeout")
 	character_emote.set_texture(null)
 

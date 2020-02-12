@@ -17,7 +17,7 @@ onready var joinServerPort = $PanelJoin/Content/txtJoinPort
 func _ready():
 	network.connect("connection_established", self, "_on_connection_established")
 	network.connect("connection_closed", self, "_on_connection_closed")
-	
+
 	if "--host=true" in OS.get_cmdline_args():
 		set_player_info()
 		network.create_server("KAG-Rewritten Server", 3074)
@@ -28,18 +28,18 @@ func set_player_info():
 
 func _on_btCreate_pressed():
 	set_player_info()
-	
+
 	var name = hostServerName.text
 	var port = int(joinServerPort.text)
-	
+
 	network.create_server(name, port)
 
 func _on_btJoin_pressed():
 	set_player_info()
-	
+
 	var ip = joinServerIP.text
 	var port = int(joinServerPort.text)
-	
+
 	network.join_server(ip, port)
 
 ### --- Events
